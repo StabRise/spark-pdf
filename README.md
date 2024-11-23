@@ -27,7 +27,3 @@
 ## Disclaimer
 
 This project is not affiliated with, endorsed by, or connected to the Apache Software Foundation or Apache Spark.
-
-
-
-jar -cvf bundle.jar spark-pdf_2.12-0.1.0.jar spark-pdf_2.12-0.1.0.jar.asc spark-pdf_2.12-0.1.0-javadoc.jar spark-pdf_2.12-0.1.0-javadoc.jar.asc spark-pdf_2.12-0.1.0.pom spark-pdf_2.12-0.1.0.pom.asc
