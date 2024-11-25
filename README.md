@@ -21,13 +21,21 @@
 
 ---
 
-⭐ Star us on GitHub — it motivates us a lot!
-
-[![Share](https://img.shields.io/badge/share-000000?logo=x&logoColor=white)](https://x.com/intent/tweet?text=Check%20out%20this%20project%20on%20GitHub:%20https://github.com/StabRise/spark-pdf%20%23OpenIDConnect%20%23Security%20%23Authentication)
-[![Share](https://img.shields.io/badge/share-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/StabRise/spark-pdf)
-[![Share](https://img.shields.io/badge/share-FF4500?logo=reddit&logoColor=white)](https://www.reddit.com/submit?title=Check%20out%20this%20project%20on%20GitHub:%20https://github.com/StabRise/spark-pdf)
+<p align="center">
+    <a href="https://x.com/intent/tweet?text=Check%20out%20this%20project%20on%20GitHub:%20https://github.com/StabRise/spark-pdf%20%23OpenIDConnect%20%23Security%20%23Authentication" target="_blank">
+        <img src="https://img.shields.io/badge/share-000000?logo=x&logoColor=white" alt="Share on X">
+    </a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/StabRise/spark-pdf" target="_blank">
+        <img src="https://img.shields.io/badge/share-0A66C2?logo=linkedin&logoColor=white" alt="Share on LinkedIn">
+    </a>
+    <a href="https://www.reddit.com/submit?title=Check%20out%20this%20project%20on%20GitHub:%20https://github.com/StabRise/spark-pdf" target="_blank">
+        <img src="https://img.shields.io/badge/share-FF4500?logo=reddit&logoColor=white" alt="Share on Reddit">
+    </a>
+</p>
 
 ---
+
+⭐ Star us on GitHub — it motivates us a lot!
 
 **Source Code**: [https://github.com/StabRise/spark-pdf](https://github.com/StabRise/spark-pdf)
 
