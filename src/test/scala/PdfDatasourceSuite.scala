@@ -1,8 +1,9 @@
 package com.stabrise.sparkpdf
 
 import schemas.Document
+
 import org.apache.spark.sql
-import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.functions.{col, split}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
@@ -29,36 +30,18 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
 
   test("PDFDataSource with GhostScript") {
 
-    val pdfPath = getClass.getClassLoader.getResource("pdfs/example_image_10_page.pdf").getPath
-
-    // Read data using PDF data source
-    val pdfDF = spark.read.format("pdf")
-      .option("imageType", ImageType.BINARY)
-      .option("resolution", "200")
-      .option("pagePerPartition", "5")
-      .option("reader", PdfReader.GHOST_SCRIPT)
-      .load(pdfPath)
+    val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.GHOST_SCRIPT)
 
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
-    pdfDF.rdd.partitions.length shouldBe 2
+    pdfDF.rdd.partitions.length shouldBe 5
 
     pdfDF.select("path","page_number", "text", "image", "partition_number").show(23, truncate = true)
 
   }
 
   test("PDFDataSource with GhostScript and OCR") {
-    val filePath = "pdfs/example_image_10_page.pdf"
-    val fileName = Paths.get(filePath).getFileName.toString
-    val pdfPath = getClass.getClassLoader.getResource(filePath).getPath
-
-    // Read data using PDF data source
-    val pdfDF = spark.read.format("pdf")
-      .option("imageType", ImageType.BINARY)
-      .option("resolution", "200")
-      .option("pagePerPartition", "2")
-      .option("reader", PdfReader.GHOST_SCRIPT)
-      .load(pdfPath)
+    val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.GHOST_SCRIPT)
 
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
@@ -77,17 +60,23 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
   }
 
 
-  test("PDFDataSource with PdfBox") {
-
-    val pdfPath = getClass.getClassLoader.getResource("pdfs/example_image_10_page.pdf").getPath
+  private def readPdf(filePath: String, reader: String) = {
+    val fileName = Paths.get(filePath).getFileName.toString
+    val pdfPath = getClass.getClassLoader.getResource(filePath).getPath
 
     // Read data using PDF data source
     val pdfDF = spark.read.format("pdf")
       .option("imageType", ImageType.BINARY)
       .option("resolution", "200")
       .option("pagePerPartition", "2")
-      .option("reader", PdfReader.PDF_BOX)
+      .option("reader", reader)
       .load(pdfPath)
+    (filePath, fileName, pdfDF)
+  }
+
+  test("PDFDataSource with PdfBox") {
+
+    val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.PDF_BOX)
 
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
@@ -98,17 +87,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
   }
 
   test("PDFDataSource with PdfBox and OCR") {
-    val filePath = "pdfs/example_image_10_page.pdf"
-    val fileName = Paths.get(filePath).getFileName.toString
-    val pdfPath = getClass.getClassLoader.getResource(filePath).getPath
-
-    // Read data using PDF data source
-    val pdfDF = spark.read.format("pdf")
-      .option("imageType", ImageType.BINARY)
-      .option("resolution", "200")
-      .option("pagePerPartition", "2")
-      .option("reader", PdfReader.PDF_BOX)
-      .load(pdfPath)
+    val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.PDF_BOX)
 
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
