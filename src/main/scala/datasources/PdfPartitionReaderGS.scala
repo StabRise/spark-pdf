@@ -1,18 +1,12 @@
 package com.stabrise.sparkpdf
 package datasources
 
-import ocr.TesseractBytedeco
-import schemas.Box
 import org.apache.hadoop.fs.Path
-import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.execution.datasources.{FilePartition, PartitionedFile}
 import org.apache.spark.sql.types.StructType
-import org.apache.spark.unsafe.types.UTF8String
 
 import java.io.{ByteArrayOutputStream, InputStream}
 import java.net.URI
-import java.nio.file.Paths
 import scala.annotation.tailrec
 import scala.sys.process.{Process, ProcessLogger}
 
