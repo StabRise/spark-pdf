@@ -12,7 +12,7 @@ class PdfPartitionReaderFactory(readDataSchema: StructType,
                                 sparkSession: SparkSession) extends PartitionReaderFactory {
   override def createReader(partition: InputPartition): PartitionReader[InternalRow] = {
     options.get("reader") match {
-      case Some(PdfReader.PDF_BOX) => new PdfPartitionReaderPDFBox(partition.asInstanceOf[FilePartition], readDataSchema, options, sparkSession)
+      case Some(PdfReader.PDF_BOX) => new PdfPartitionReaderPDFBox(partition.asInstanceOf[FilePartition], readDataSchema, options)
       case Some(PdfReader.GHOST_SCRIPT) => new PdfPartitionReaderGS(partition.asInstanceOf[FilePartition], readDataSchema, options)
       case _ => throw new RuntimeException(s"Unsupported reader for type: ${options.get("reader")}")
     }
