@@ -24,7 +24,7 @@
 
 **Source Code**: [https://github.com/StabRise/spark-pdf](https://github.com/StabRise/spark-pdf)
 
-**Quick Start Jupyter Notebook**: [https://github.com/StabRise/spark-pdf/examples/PdfDataSource.ipynb](https://github.com/StabRise/spark-pdf/examples/PdfDataSource.ipynb)
+**Quick Start Jupyter Notebook**: [https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSource.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSource.ipynb)
 
 ---
 
