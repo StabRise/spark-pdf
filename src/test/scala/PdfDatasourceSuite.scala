@@ -43,6 +43,11 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
   test("PDFDataSource with GhostScript and OCR") {
     val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.GHOST_SCRIPT)
 
+    checkOcrResulst(filePath, fileName, pdfDF)
+  }
+
+
+  private def checkOcrResulst(filePath: String, fileName: String, pdfDF: DataFrame): Unit = {
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
     pdfDF.rdd.partitions.length shouldBe 5
@@ -50,7 +55,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     val data = pdfDF.select("document", "filename", "path").collect()
 
     data.head.getString(1) shouldBe fileName
-    data.head.getString(2) should include (filePath)
+    data.head.getString(2) should include(filePath)
 
 
     val document = Document(data.head.getAs[Row](0))
@@ -58,7 +63,6 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     document.text should include("On October 21, 2024, tech giant OpenAl announced the release")
     pdfDF.select("document.*").show(2, truncate = true)
   }
-
 
   private def readPdf(filePath: String, reader: String) = {
     val fileName = Paths.get(filePath).getFileName.toString
@@ -89,19 +93,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
   test("PDFDataSource with PdfBox and OCR") {
     val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.PDF_BOX)
 
-    pdfDF.count() shouldBe 10
-    pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
-    pdfDF.rdd.partitions.length shouldBe 5
-
-    val data = pdfDF.select("document", "filename", "path").collect()
-
-    data.head.getString(1) shouldBe fileName
-    data.head.getString(2) should include (filePath)
-
-    val document = Document(data.head.getAs[Row](0))
-    document.path should include (filePath)
-    document.text should include ("On October 21, 2024, tech giant OpenAl announced the release")
-    pdfDF.select("document.*").show(2, truncate = true)
+    checkOcrResulst(filePath, fileName, pdfDF)
   }
 
   override def afterEach(): Unit = {
