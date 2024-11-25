@@ -44,7 +44,7 @@ If you found useful this project, please give a star to the repository.
 
 ## Requirements
 
-- Java 8
+- Java 8, 11
 - Apache Spark 3.4.0 (for request build for another version please file issue)
 - Ghostscript 9.50 or later (only for the GhostScript reader)
 
