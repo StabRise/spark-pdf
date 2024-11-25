@@ -1,6 +1,9 @@
 # PDF DataSource for the Apache Spark
 
 <p align="center">
+    <a target="_blank" href="https://colab.research.google.com/github/StabRise/spark-pdf/blob/main/examples/PdfDatasource.ipynb">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab Qick Start"/>
+    </a>
     <a href="https://search.maven.org/artifact/com.stabrise/spark-pdf_2.12">
         <img alt="Maven Central Version" src="https://img.shields.io/maven-central/v/com.stabrise/spark-pdf_2.12">
     </a>
