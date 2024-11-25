@@ -47,7 +47,7 @@ case class PdfScan(
   protected lazy val partitions: Seq[FilePartition] = {
 
     val selectedPartitions = fileIndex.listFiles(partitionFilters, dataFilters)
-    val maxSplitBytes = options.getOrDefault("pageperpartition", "1").toInt
+    val maxSplitBytes = options.getOrDefault("pagePerPartition", DefaultOptions.PAGE_PER_PARTITION).toInt
 
     def toAttributeField(field: StructField): AttributeReference =
       AttributeReference(field.name, field.dataType, field.nullable, field.metadata)()

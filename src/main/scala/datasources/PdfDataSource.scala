@@ -1,6 +1,7 @@
 package com.stabrise.sparkpdf
 package datasources
 
+import schemas.{Document, Image}
 import org.apache.spark.sql.execution.datasources.v2.FileDataSourceV2
 import org.apache.spark.sql.sources.DataSourceRegister
 import org.apache.spark.sql.types.StructType
@@ -18,11 +19,12 @@ class PdfDataSource extends FileDataSourceV2 with DataSourceRegister{
     // Infer schema logic goes here
     StructType(Seq(
       StructField("path", StringType, nullable = false),
+      StructField("filename", StringType, nullable = false),
       StructField("page_number", IntegerType, nullable = false),
-      StructField("text", StringType, nullable = false),
-      StructField("image", BinaryType, nullable = false),
       StructField("partition_number", IntegerType, nullable = false),
-      StructField("resolution", IntegerType, nullable = false),
+      StructField("text", StringType, nullable = false),
+      StructField("image", Image.columnSchema, nullable = false),
+      StructField("document", Document.columnSchema, nullable = false)
     ))
   }
 
