@@ -23,6 +23,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: 'sbt'
+    - name: Install Ghostscript
+      run: sudo apt-get install ghostscript -y
     - name: Run tests
       run: sbt test
       # Optional: This step uploads information to the GitHub dependency graph and unblocking Dependabot alerts for the repository
