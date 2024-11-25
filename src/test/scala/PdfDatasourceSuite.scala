@@ -30,22 +30,39 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
 
   test("PDFDataSource with GhostScript") {
 
-    val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.GHOST_SCRIPT)
+    val (filePath, fileName, pdfDF) = readPdf(PdfReader.GHOST_SCRIPT)
 
+    checkImegeResult(pdfDF)
+
+  }
+
+  private def checkImegeResult(pdfDF: DataFrame): Unit = {
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
     pdfDF.rdd.partitions.length shouldBe 5
 
-    pdfDF.select("path","page_number", "text", "image", "partition_number").show(23, truncate = true)
-
+    pdfDF.select("path", "page_number", "text", "image", "partition_number").show(23, truncate = true)
   }
 
   test("PDFDataSource with GhostScript and OCR") {
-    val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.GHOST_SCRIPT)
+    val (filePath, fileName, pdfDF) = readPdf(PdfReader.GHOST_SCRIPT)
 
     checkOcrResulst(filePath, fileName, pdfDF)
   }
 
+  test("PDFDataSource with PdfBox") {
+
+    val (filePath, fileName, pdfDF) = readPdf(PdfReader.PDF_BOX)
+
+    checkImegeResult(pdfDF)
+
+  }
+
+  test("PDFDataSource with PdfBox and OCR") {
+    val (filePath, fileName, pdfDF) = readPdf(PdfReader.PDF_BOX)
+
+    checkOcrResulst(filePath, fileName, pdfDF)
+  }
 
   private def checkOcrResulst(filePath: String, fileName: String, pdfDF: DataFrame): Unit = {
     pdfDF.count() shouldBe 10
@@ -64,7 +81,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     pdfDF.select("document.*").show(2, truncate = true)
   }
 
-  private def readPdf(filePath: String, reader: String) = {
+  private def readPdf(reader: String, filePath: String = "pdfs/example_image_10_page.pdf") = {
     val fileName = Paths.get(filePath).getFileName.toString
     val pdfPath = getClass.getClassLoader.getResource(filePath).getPath
 
@@ -76,24 +93,6 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
       .option("reader", reader)
       .load(pdfPath)
     (filePath, fileName, pdfDF)
-  }
-
-  test("PDFDataSource with PdfBox") {
-
-    val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.PDF_BOX)
-
-    pdfDF.count() shouldBe 10
-    pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
-    pdfDF.rdd.partitions.length shouldBe 5
-
-    pdfDF.select("path", "page_number", "text", "image", "partition_number").show(23, truncate = true)
-
-  }
-
-  test("PDFDataSource with PdfBox and OCR") {
-    val (filePath, fileName, pdfDF) = readPdf("pdfs/example_image_10_page.pdf", PdfReader.PDF_BOX)
-
-    checkOcrResulst(filePath, fileName, pdfDF)
   }
 
   override def afterEach(): Unit = {
