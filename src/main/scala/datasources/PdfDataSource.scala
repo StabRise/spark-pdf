@@ -13,7 +13,7 @@ import org.apache.spark.sql.types.{BinaryType, DataType, IntegerType, StringType
 
 
 class PdfDataSource extends FileDataSourceV2 with DataSourceRegister{
-  override def shortName() = "pdf"
+  override def shortName(): String = "pdf"
 
   override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
     // Infer schema logic goes here

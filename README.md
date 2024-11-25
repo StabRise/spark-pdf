@@ -17,9 +17,11 @@
     <a href="https://github.com/StabRise/spark-pdf/blob/master/LICENSE" >
         <img src="https://img.shields.io/badge/License-AGPL%203-blue.svg" alt="License"/>
     </a>
+    <a href="https://app.codacy.com/gh/StabRise/spark-pdf/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade" target="_blank">
+        <img src="https://app.codacy.com/project/badge/Grade/2fde782d0c754df1b60b389799f46f0f" alt="Codacy Badge">
+    </a>
 </p>
 
----
 
 <p align="center">
     <a href="https://x.com/intent/tweet?text=Check%20out%20this%20project%20on%20GitHub:%20https://github.com/StabRise/spark-pdf%20%23OpenIDConnect%20%23Security%20%23Authentication" target="_blank">
