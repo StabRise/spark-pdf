@@ -47,7 +47,7 @@
 
 ## Welcome to the Spark PDF
 
-The project provides a custom data source for the Apache Spark that allows you to read PDF files into the Spark DataFrame.
+The project provides a custom data source for the [Apache Spark](https://spark.apache.org/) that allows you to read PDF files into the Spark DataFrame.
 
 If you found useful this project, please give a star to the repository.
 

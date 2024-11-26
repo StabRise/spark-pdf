@@ -29,7 +29,7 @@ ThisBuild / developers := List(
 
 ThisBuild / description := "PDF Datasource for Apache Spark. Read PDF files to the DataFrame."
 ThisBuild / licenses := List("AGPL-V3" -> new URL("https://www.gnu.org/licenses/agpl-3.0.html"))
-ThisBuild / homepage := Some(url("https://stabrise/spark-pdf/"))
+ThisBuild / homepage := Some(url("https://stabrise.com/spark-pdf/"))
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 ThisBuild / sbtPluginPublishLegacyMavenStyle := false
 ThisBuild / pomIncludeRepository := { _ => false }
