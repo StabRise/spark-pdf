@@ -16,4 +16,5 @@ object DefaultOptions {
   val IMAGE_TYPE = ImageType.RGB
   val PAGE_PER_PARTITION = "5"
   val OUTPUT_IMAGE_TYPE = "jpeg"
+  val OCR_CONFIG = "psm=3"
 }
