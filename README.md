@@ -80,6 +80,7 @@ artifactId: spark-pdf_2.12
 - `resolution`: Resolution for rendering PDF page to the image. Default: "300" dpi.
 - `pagePerPartition`: Number pages per partition in Spark DataFrame. Default: "5".
 - `reader`: Supports: `pdfBox` - based on PdfBox java lib, `gs` - based on GhostScript (need installation GhostScipt to the system)
+- `ocrConfig`: Tesseract OCR configuration. Default: "psm=3". For more information see [Tesseract OCR Params](TesseractParams.md)
 
 ## Output Columns in the DataFrame:
 

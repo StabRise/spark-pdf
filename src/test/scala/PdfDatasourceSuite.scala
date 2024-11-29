@@ -79,6 +79,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     document.path should include(filePath)
     document.text should include("On October 21, 2024, tech giant OpenAl announced the release")
     pdfDF.select("document.*").show(2, truncate = true)
+    document
   }
 
   private def readPdf(reader: String, filePath: String = "pdfs/example_image_10_page.pdf") = {
@@ -91,6 +92,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
       .option("resolution", "200")
       .option("pagePerPartition", "2")
       .option("reader", reader)
+      .option("ocrConfig", "tessedit_pageseg_mode=11")
       .load(pdfPath)
     (filePath, fileName, pdfDF)
   }
