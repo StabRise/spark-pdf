@@ -17,11 +17,11 @@ abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
   extends PartitionReader[InternalRow] {
 
   var filename: String = ""
-  lazy val tesseract = new TesseractBytedeco()
+  lazy val tesseract = new TesseractBytedeco(config = options.getOrElse("ocrconfig", DefaultOptions.OCR_CONFIG))
   var pageNumCur: Int = 0
 
 
-  def getSearchableText(): String = ""
+  def getSearchableText: String = ""
 
   def renderImage(resolution: Int): Array[Byte]
 
@@ -29,7 +29,7 @@ abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
     val resolution = options.getOrElse("resolution", DefaultOptions.RESOLUTION).toInt
 
     val text = if (readDataSchema.fieldNames.contains("text")) {
-      getSearchableText()
+      getSearchableText
     } else ""
 
     // Render the image from the PDF
