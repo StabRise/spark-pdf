@@ -1,17 +1,22 @@
 package com.stabrise.sparkpdf
 package datasources
 
+//import scala.reflect.runtime.universe
+//import scala.reflect.runtime.universe._
+
 import org.apache.hadoop.fs.{BlockLocation, FileStatus, LocatedFileStatus, Path}
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.spark.paths.SparkPath
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.execution.PartitionedFileUtil
 import org.apache.spark.sql.execution.datasources.PartitionedFile
+import org.apache.spark.sql.execution.datasources.FileStatusWithMetadata
 
 object PdfPartitionedFileUtil {
   def splitFiles(
                   sparkSession: SparkSession,
-                  file: FileStatus,
+                  file: FileStatusWithMetadata,
                   filePath: Path,
                   isSplitable: Boolean,
                   maxSplitBytes: Long,
@@ -21,7 +26,7 @@ object PdfPartitionedFileUtil {
     val status = fs.getFileStatus(filePath)
 
     // Load the PDF document
-    val document = PDDocument.load(fs.open(status.getPath))
+    val document = PDDocument.load(fs.open(file.getPath))
     val page_num = document.getNumberOfPages
     document.close()
     //println("Page number scan: " + page_num)
@@ -29,12 +34,23 @@ object PdfPartitionedFileUtil {
       val remaining = page_num - offset
       val size = if (remaining > maxSplitBytes) maxSplitBytes else remaining
       val hosts = getBlockHosts(getBlockLocations(file), offset, size)
-      PartitionedFile(partitionValues, SparkPath.fromPath(filePath), offset, size, hosts,
-        file.getModificationTime, page_num)
+      //val hosts = PartitionedFileUtil.getBlockHosts(PartitionedFileUtil.getBlockLocations(file), offset, size)
+      //val h = hosts.asInstanceOf[scala.collection.immutable.Iterable[String]]
+//      typeOf[PartitionedFile].members.filter(!_.isMethod).filter(_.name.toTermName.toString == "locations").foreach { i =>
+//        println(i.name, i.typeSignature)
+//      }
+      println(partitionValues)
+      println(SparkPath.fromPath(filePath))
+      println(SparkPath.fromPath(file.getPath))
+      println(offset)
+      println(size)
+      println(page_num)
+      PartitionedFile(partitionValues=partitionValues, filePath=SparkPath.fromPath(file.getPath), start=offset, length = size,
+        modificationTime=file.getModificationTime, fileSize=page_num.toLong)
     }
   }
 
-  private def getBlockLocations(file: FileStatus): Array[BlockLocation] = file match {
+  private def getBlockLocations(file: FileStatusWithMetadata): Array[BlockLocation] = file match {
     case f: LocatedFileStatus => f.getBlockLocations
     case f => Array.empty[BlockLocation]
   }
