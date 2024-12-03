@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "pyspark-pdf"
+version = "0.1.0"
+description = ""
+authors = ["Mykola Melnyk <kolia1985@gmail.com>"]
+readme = "README.md"
+packages = [{include = "sparkpdf"}]
+include = ["sparkpdf/resource/*"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyarrow = "^18.1.0"
+pandas = "^2.2.2"
+grpcio-status = "^1.68.1"
+
+[tool.poetry.group.test.dependencies]
+pyspark = "^4.0.0.dev2"
+pytest = "^7.4.4"
+pytest-spark = "0.6.0"
+jupyter = "^1.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
