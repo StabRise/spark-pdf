@@ -1,7 +1,7 @@
 import xerial.sbt.Sonatype.sonatypeCentralHost
 import xerial.sbt.Sonatype.GitHubHosting
 
-ThisBuild / version := "0.1.12"
+ThisBuild / version := "0.1.10"
 
 ThisBuild / scalaVersion := "2.12.15"
 ThisBuild / organization := "com.stabrise"
@@ -39,11 +39,11 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.ScalaLibrary
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat
 
-val sparkVersion = "3.5.0"
+val sparkVersion = "3.3.2"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "spark-pdf",
+    name := "spark-pdf-spark33",
     idePackagePrefix := Some("com.stabrise.sparkpdf"),
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-core" % sparkVersion % "provided",

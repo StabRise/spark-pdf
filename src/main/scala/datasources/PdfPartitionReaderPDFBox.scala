@@ -2,6 +2,7 @@ package com.stabrise.sparkpdf
 package datasources
 
 import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.Path
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.{PDFRenderer, ImageType => PDFBoxImageType}
 import org.apache.pdfbox.text.PDFTextStripper
@@ -10,6 +11,8 @@ import org.apache.spark.sql.types.StructType
 
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
+
+import org.apache.spark.sql.execution.datasources.csv.CSVDataSource
 
 
 // TODO: Need to refactor it for reduce to use state variables and make it more transparent
@@ -29,9 +32,10 @@ class PdfPartitionReaderPDFBox(inputPartition: FilePartition,
     if (currenFile < inputPartition.files.length) {
       val file = inputPartition.files(currenFile)
       if (pageNum == file.start.toInt) {
-        filename = file.filePath.toString()
-        val fs = file.filePath.toPath.getFileSystem(new Configuration())
-        val status = fs.getFileStatus(file.toPath)
+        filename = file.filePath
+        val hdfsPath = new Path(filename)
+        val fs = hdfsPath.getFileSystem(new Configuration())
+        val status = fs.getFileStatus(hdfsPath)
         document = PDDocument.load(fs.open(status.getPath))
         stripper = new PDFTextStripper()
         pdfRenderer = new PDFRenderer(document)
