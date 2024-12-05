@@ -3,7 +3,7 @@ name: Scala CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "cross_spark" ]
   pull_request:
     branches: [ "main" ]
 
