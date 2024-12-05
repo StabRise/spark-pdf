@@ -3,7 +3,7 @@ package datasources
 
 import org.apache.hadoop.fs.FileStatus
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.connector.write.{LogicalWriteInfo, Write, WriteBuilder}
+import org.apache.spark.sql.connector.write.{LogicalWriteInfo, WriteBuilder}
 import org.apache.spark.sql.execution.datasources.FileFormat
 import org.apache.spark.sql.execution.datasources.v2.FileTable
 import org.apache.spark.sql.types.StructType

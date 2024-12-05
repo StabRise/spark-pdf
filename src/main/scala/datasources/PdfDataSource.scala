@@ -1,16 +1,14 @@
 package com.stabrise.sparkpdf
 package datasources
 
-import schemas.{Document, Image}
-import org.apache.spark.sql.execution.datasources.v2.FileDataSourceV2
-import org.apache.spark.sql.sources.DataSourceRegister
-import org.apache.spark.sql.types.StructType
-import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import org.apache.spark.sql.connector.catalog.Table
 import org.apache.spark.sql.execution.datasources.FileFormat
 import org.apache.spark.sql.execution.datasources.binaryfile.BinaryFileFormat
-import org.apache.spark.sql.types.{BinaryType, DataType, IntegerType, StringType, StructField, StructType}
-
+import org.apache.spark.sql.execution.datasources.v2.FileDataSourceV2
+import org.apache.spark.sql.sources.DataSourceRegister
+import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.util.CaseInsensitiveStringMap
+import com.stabrise.sparkpdf.schemas.{Image, Document}
 
 class PdfDataSource extends FileDataSourceV2 with DataSourceRegister{
   override def shortName(): String = "pdf"

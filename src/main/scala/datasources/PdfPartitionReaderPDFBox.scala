@@ -1,6 +1,7 @@
 package com.stabrise.sparkpdf
 package datasources
 
+import com.stabrise.sparkpdf.datasources.{PdfPartitionReadedBase, PdfPartitionedFileUtil}
 import org.apache.hadoop.conf.Configuration
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.{PDFRenderer, ImageType => PDFBoxImageType}
@@ -30,8 +31,9 @@ class PdfPartitionReaderPDFBox(inputPartition: FilePartition,
       val file = inputPartition.files(currenFile)
       if (pageNum == file.start.toInt) {
         filename = file.filePath.toString()
-        val fs = file.filePath.toPath.getFileSystem(new Configuration())
-        val status = fs.getFileStatus(file.toPath)
+        val hdfsPath = PdfPartitionedFileUtil.getHdfsPath(file)
+        val fs = hdfsPath.getFileSystem(new Configuration())
+        val status = fs.getFileStatus(hdfsPath)
         document = PDDocument.load(fs.open(status.getPath))
         stripper = new PDFTextStripper()
         pdfRenderer = new PDFRenderer(document)

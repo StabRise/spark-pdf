@@ -25,5 +25,13 @@ jobs:
         cache: 'sbt'
     - name: Install Ghostscript
       run: sudo apt-get install ghostscript -y
-    - name: Run tests
+    - name: Run tests on Spark 3.3.2
+      env:
+        SPARK_VERSION: 3.3.2
       run: sbt test
+
+    - name: Run tests on Spark 3.5.0
+      env:
+        SPARK_VERSION: 3.5.0
+      run: sbt test
+

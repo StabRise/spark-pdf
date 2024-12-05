@@ -1,6 +1,7 @@
 package com.stabrise.sparkpdf
 package datasources
 
+import com.stabrise.sparkpdf.datasources.PdfPartitionReadedBase
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.execution.datasources.{FilePartition, PartitionedFile}
 import org.apache.spark.sql.types.StructType

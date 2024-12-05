@@ -1,15 +1,18 @@
 package com.stabrise.sparkpdf
 package datasources
 
-import ocr.TesseractBytedeco
-import schemas.Box
-import java.nio.file.Paths
+import com.stabrise.sparkpdf.DefaultOptions
+import com.stabrise.sparkpdf.ocr.TesseractBytedeco
+import com.stabrise.sparkpdf.schemas.Box
 import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.execution.datasources.FilePartition
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.unsafe.types.UTF8String
-import org.apache.spark.sql.catalyst.util.ArrayData
+
+import java.nio.file.Paths
+
 
 abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
                                       readDataSchema: StructType,
@@ -55,7 +58,7 @@ abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
     val documentRow = InternalRow(
       UTF8String.fromString(filename),
       UTF8String.fromString(ocrText),
-      UTF8String.fromString("ocr"),
+      UTF8String.fromString("common/src/main/scala/ocr"),
       bBoxes,
       UTF8String.fromString(""))
 

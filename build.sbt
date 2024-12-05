@@ -32,20 +32,73 @@ ThisBuild / licenses := List("AGPL-V3" -> new URL("https://www.gnu.org/licenses/
 ThisBuild / homepage := Some(url("https://stabrise.com/spark-pdf/"))
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 ThisBuild / sbtPluginPublishLegacyMavenStyle := false
-ThisBuild / pomIncludeRepository := { _ => false }
-ThisBuild / publishMavenStyle := true
 ThisBuild / publishTo := sonatypePublishToBundle.value
 
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.ScalaLibrary
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat
 
-val sparkVersion = "3.5.0"
+val sparkVersion = System.getProperty("SPARK_VERSION", "3.5.0")
+
+
+lazy val common = (project in file("common"))
+  .settings(
+    name := "common",
+    commonSettings
+  )
+  .disablePlugins(AssemblyPlugin)
+
+
+lazy val spark35 = (project in file("spark35"))
+  .settings(
+    name := "spark35",
+    commonSettings,
+  )
+  .disablePlugins(AssemblyPlugin)
+  .dependsOn(common)
+
+lazy val spark34 = (project in file("spark34"))
+  .settings(
+    name := "spark34",
+    commonSettings,
+  )
+  .disablePlugins(AssemblyPlugin)
+  .dependsOn(common)
+
+lazy val spark33 = (project in file("spark33"))
+  .settings(
+    name := "spark33",
+    commonSettings,
+  )
+  .disablePlugins(AssemblyPlugin)
+  .dependsOn(common)
 
 lazy val root = (project in file("."))
   .settings(
     name := "spark-pdf",
-    idePackagePrefix := Some("com.stabrise.sparkpdf"),
-    libraryDependencies ++= Seq(
+    commonSettings,
+  )
+  .dependsOn(dependencyModules():_*)
+  .aggregate(aggregatedModules(): _*)
+
+def aggregatedModules(): List[sbt.ProjectReference] =
+  sparkVersion match {
+    case sparkVersion if sparkVersion.startsWith("3.3") => List(common, spark33)
+    case sparkVersion if sparkVersion.startsWith("3.4") => List(common, spark34)
+    case _ =>  List(common, spark35)
+  }
+def dependencyModules(): List[ClasspathDependency] =
+  sparkVersion match {
+    case sparkVersion if sparkVersion.startsWith("3.3") => List(spark33).map(ClasspathDependency(_, None))
+    case sparkVersion if sparkVersion.startsWith("3.4") => List(spark34).map(ClasspathDependency(_, None))
+    case _ =>  List(spark35).map(ClasspathDependency(_, None))
+  }
+
+lazy val commonSettings = Seq(
+  scalacOptions ++= Seq("-deprecation", "-unchecked"),
+  libraryDependencies ++= commonDependencies
+)
+
+lazy val commonDependencies = Seq(
       "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
       "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
       "org.apache.spark" %% "spark-mllib" % sparkVersion % "provided",
@@ -65,13 +118,11 @@ lazy val root = (project in file("."))
       exclude("org.apache.commons", "commons-math3")
       exclude("commons-logging", "commons-logging")
       exclude("commons-cli", "commons-cli")
-      exclude("org.junit.jupiter", "junit-jupiter")),
-    assemblySettings
-  )
-
+      exclude("org.junit.jupiter", "junit-jupiter")
+)
 
 lazy val assemblySettings = Seq(
-  assembly / assemblyOption := (assemblyOption in assembly).value.copy(includeScala = false),
+  //assembly / assemblyOption := (assemblyOption in assembly).value.copy(includeScala = false),
   assembly / assemblyMergeStrategy := {
     case PathList("org", "xmlpull", xs@_*) => MergeStrategy.last
     case PathList("apache", "commons", "logging", "impl", xs@_*) => MergeStrategy.discard
@@ -104,7 +155,6 @@ lazy val assemblySettings = Seq(
     case x =>
       val oldStrategy = (assembly / assemblyMergeStrategy).value
       oldStrategy(x)
-    case _ => MergeStrategy.deduplicate
   },
   assembly / assemblyShadeRules := Seq(
     ShadeRule.rename("net.imglib2.imglib2.util.**" -> "shadeio.imglib2.imglib2.util.@1").inAll,
