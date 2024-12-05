@@ -1,7 +1,6 @@
 package com.stabrise.sparkpdf
 package datasources
 
-import com.stabrise.sparkpdf.datasources.{PdfPartitionReadedBase, PdfPartitionedFileUtil}
 import org.apache.hadoop.conf.Configuration
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.{PDFRenderer, ImageType => PDFBoxImageType}

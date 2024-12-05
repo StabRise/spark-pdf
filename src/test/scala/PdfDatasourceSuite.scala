@@ -25,42 +25,38 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
       .config("spark.driver.memory", "8G")
       .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .config("spark.sql.repl.eagerEval.enabled", "true")
-      .appName(appName).master(master).getOrCreate()
+      .appName(appName)
+      .master(master)
+      .getOrCreate()
+    spark.sparkContext.setLogLevel("ERROR")
   }
 
   test("PDFDataSource with GhostScript") {
 
     val (filePath, fileName, pdfDF) = readPdf(PdfReader.GHOST_SCRIPT)
-
     checkImegeResult(pdfDF)
-
   }
 
   private def checkImegeResult(pdfDF: DataFrame): Unit = {
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
     pdfDF.rdd.partitions.length shouldBe 5
-
-    pdfDF.select("path", "page_number", "text", "image", "partition_number").show(23, truncate = true)
+    pdfDF.select("path", "page_number", "text", "image", "partition_number").collect()
   }
 
   test("PDFDataSource with GhostScript and OCR") {
     val (filePath, fileName, pdfDF) = readPdf(PdfReader.GHOST_SCRIPT)
-
     checkOcrResulst(filePath, fileName, pdfDF)
   }
 
   test("PDFDataSource with PdfBox") {
 
     val (filePath, fileName, pdfDF) = readPdf(PdfReader.PDF_BOX)
-
     checkImegeResult(pdfDF)
-
   }
 
   test("PDFDataSource with PdfBox and OCR") {
     val (filePath, fileName, pdfDF) = readPdf(PdfReader.PDF_BOX)
-
     checkOcrResulst(filePath, fileName, pdfDF)
   }
 
@@ -74,11 +70,10 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     data.head.getString(1) shouldBe fileName
     data.head.getString(2) should include(filePath)
 
-
     val document = Document(data.head.getAs[Row](0))
     document.path should include(filePath)
     document.text should include("On October 21, 2024, tech giant OpenAl announced the release")
-    pdfDF.select("document.*").show(2, truncate = true)
+    //pdfDF.select("document.*").show(2, truncate = true)
   }
 
   private def readPdf(reader: String, filePath: String = "pdfs/example_image_10_page.pdf") = {

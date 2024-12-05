@@ -29,7 +29,10 @@ jobs:
       env:
         SPARK_VERSION: 3.3.2
       run: sbt test
-
+    - name: Run tests on Spark 3.4.1
+      env:
+        SPARK_VERSION: 3.4.1
+      run: sbt test
     - name: Run tests on Spark 3.5.0
       env:
         SPARK_VERSION: 3.5.0

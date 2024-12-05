@@ -6,8 +6,9 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.spark.paths.SparkPath
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.execution.PartitionedFileUtil
 import org.apache.spark.sql.execution.datasources.PartitionedFile
-import org.apache.spark.sql.execution.datasources.{FileStatusWithMetadata }
+import org.apache.spark.sql.execution.datasources.FileStatusWithMetadata
 
 object PdfPartitionedFileUtil {
 
@@ -32,7 +33,7 @@ object PdfPartitionedFileUtil {
     (0L until page_num by maxSplitBytes).map { offset =>
       val remaining = page_num - offset
       val size = if (remaining > maxSplitBytes) maxSplitBytes else remaining
-      val hosts = PdfBasePartitionedFileUtil.getBlockHosts(getBlockLocations(file), offset, size)
+      val hosts = PdfBasePartitionedFileUtil.getBlockHosts(getBlockLocations(file.fileStatus), offset, size)
       PartitionedFile(
         partitionValues=partitionValues,
         filePath=SparkPath.fromPath(file.getPath),
@@ -44,7 +45,7 @@ object PdfPartitionedFileUtil {
     }
   }
 
-  private def getBlockLocations(file: FileStatusWithMetadata): Array[BlockLocation] = file match {
+  private def getBlockLocations(file: FileStatus): Array[BlockLocation] = file match {
     case f: LocatedFileStatus => f.getBlockLocations
     case f => Array.empty[BlockLocation]
   }
