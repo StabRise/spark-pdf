@@ -143,6 +143,7 @@ val df = spark.read.format("pdf")
   .option("resolution", "200")
   .option("pagePerPartition", "2")
   .option("reader", "pdfBox")
+  .option("ocrConfig", "psm=11")
   .load("path to the pdf file(s)")
 
 df.select("path", "document").show()
@@ -164,6 +165,7 @@ df = spark.read.format("pdf") \
     .option("resolution", "200") \
     .option("pagePerPartition", "2") \
     .option("reader", "pdfBox") \
+    .option("ocrConfig", "psm=11") \
     .load("path to the pdf file(s)")
 
 df.select("path", "document").show()

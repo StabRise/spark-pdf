@@ -86,6 +86,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
       .option("resolution", "200")
       .option("pagePerPartition", "2")
       .option("reader", reader)
+      .option("ocrConfig", "psm=11")
       .load(pdfPath)
     (filePath, fileName, pdfDF)
   }
