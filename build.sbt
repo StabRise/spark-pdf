@@ -1,7 +1,7 @@
 import xerial.sbt.Sonatype.sonatypeCentralHost
 import xerial.sbt.Sonatype.GitHubHosting
 
-ThisBuild / version := "0.1.12"
+ThisBuild / version := "0.1.11"
 
 ThisBuild / scalaVersion := "2.12.15"
 ThisBuild / organization := "com.stabrise"
@@ -37,8 +37,14 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.ScalaLibrary
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat
 
-val sparkVersion = scala.util.Properties.envOrElse("SPARK_VERSION", "3.5.0")
+val sparkVersion = scala.util.Properties.envOrElse("SPARK_VERSION", "3.4.1")
 
+val packageName  =
+  sparkVersion match {
+    case sparkVersion if sparkVersion.startsWith("3.3") => "spark-pdf-spark33"
+    case sparkVersion if sparkVersion.startsWith("3.4") => "spark-pdf-spark34"
+    case _ =>  "spark-pdf-spark35"
+  }
 
 lazy val common = (project in file("common"))
   .settings(
@@ -46,7 +52,6 @@ lazy val common = (project in file("common"))
     commonSettings
   )
   .disablePlugins(AssemblyPlugin)
-
 
 lazy val spark35 = (project in file("spark35"))
   .settings(
@@ -74,7 +79,7 @@ lazy val spark33 = (project in file("spark33"))
 
 lazy val root = (project in file("."))
   .settings(
-    name := "spark-pdf",
+    name := packageName,
     commonSettings,
   )
   .dependsOn(dependencyModules():_*)
@@ -122,7 +127,6 @@ lazy val commonDependencies = Seq(
 )
 
 lazy val assemblySettings = Seq(
-  //assembly / assemblyOption := (assemblyOption in assembly).value.copy(includeScala = false),
   assembly / assemblyMergeStrategy := {
     case PathList("org", "xmlpull", xs@_*) => MergeStrategy.last
     case PathList("apache", "commons", "logging", "impl", xs@_*) => MergeStrategy.discard
@@ -147,10 +151,8 @@ lazy val assemblySettings = Seq(
     case PathList("META-INF", xs@_*) => MergeStrategy.first
     case PathList("plugins.config", xs@_*) => MergeStrategy.discard
     case PathList("LICENSE.txt",  xs@_*) => MergeStrategy.discard
-
     case PathList("org", "apache", "commons", "logging", xs@_*) => MergeStrategy.last
     case PathList("org", "apache", "batik", xs@_*) => MergeStrategy.last
-    // case PathList("org", "bytedeco", "flycapture", "windows-x86_64", "jniFlyCapture2_C.dll") => MergeStrategy.discard
     case PathList(ps @ _*) if ps.last contains ( ".DS_Store") => MergeStrategy.discard
     case x =>
       val oldStrategy = (assembly / assemblyMergeStrategy).value
@@ -159,7 +161,6 @@ lazy val assemblySettings = Seq(
   assembly / assemblyShadeRules := Seq(
     ShadeRule.rename("net.imglib2.imglib2.util.**" -> "shadeio.imglib2.imglib2.util.@1").inAll,
     ShadeRule.rename("org.apache.http.**" -> "org.apache.httpShaded@1").inAll
-
   ),
   assembly / assemblyJarName := s"spark-pdf-${version.value}.jar",
   assembly / test  := {}

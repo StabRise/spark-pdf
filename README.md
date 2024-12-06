@@ -11,8 +11,8 @@
     <a href="https://github.com/StabRise/spark-pdf/actions/">
         <img alt="Test" src="https://github.com/StabRise/spark-pdf/actions/workflows/scala.yml/badge.svg">
     </a>
-    <a href="https://search.maven.org/artifact/com.stabrise/spark-pdf_2.12">
-        <img alt="Maven Central Version" src="https://img.shields.io/maven-central/v/com.stabrise/spark-pdf_2.12">
+    <a href="https://search.maven.org/artifact/com.stabrise/spark-pdf-spark35_2.12">
+        <img alt="Maven Central Version" src="https://img.shields.io/maven-central/v/com.stabrise/spark-pdf-spark35_2.12">
     </a>
     <a href="https://github.com/StabRise/spark-pdf/blob/master/LICENSE" >
         <img src="https://img.shields.io/badge/License-AGPL%203-blue.svg" alt="License"/>
@@ -62,17 +62,18 @@ If you found useful this project, please give a star to the repository.
 ## Requirements
 
 - Java 8, 11
-- Apache Spark 3.4.0 (for request build for another version please file issue)
+- Apache Spark 3.3.2, 3.4.1, 3.5.0
 - Ghostscript 9.50 or later (only for the GhostScript reader)
 
 ## Installation
 
 Binary package is available in the Maven Central Repository.
 
-```
-groupId: com.stabrise
-artifactId: spark-pdf_2.12
-```
+
+- **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.11
+- **Spark 3.4.***: com.stabrise:spark-pdf-spark34_2.12:0.1.11
+- **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.11
+
 
 ## Options for the data source:
 
@@ -133,7 +134,7 @@ import org.apache.spark.sql.SparkSession
 val spark = SparkSession.builder()
   .appName("Spark PDF Example")
   .master("local[*]")
-  .config("spark.jars.packages", "com.stabrise:spark-pdf_2.12:0.1.7")
+  .config("spark.jars.packages", "com.stabrise:spark-pdf-spark35_2.12:0.1.11")
   .getOrCreate()
   
 val df = spark.read.format("pdf")
@@ -154,7 +155,7 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder \
     .master("local[*]") \
     .appName("SparkPdf") \
-    .config("spark.jars.packages", "com.stabrise:spark-pdf_2.12:0.1.7") \
+    .config("spark.jars.packages", "com.stabrise:spark-pdf-spark35_2.12:0.1.11") \
     .getOrCreate()
 
 df = spark.read.format("pdf") \
