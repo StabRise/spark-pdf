@@ -10,7 +10,7 @@ import org.apache.hadoop.conf.Configuration
 
 object PdfPartitionedFileUtil {
 
-  def getHdfsPath(file: PartitionedFile) = {
+  def getHdfsPath(file: PartitionedFile):Path = {
     val filename = file.filePath
     new Path(filename)
   }

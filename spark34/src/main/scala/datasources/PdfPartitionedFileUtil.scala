@@ -10,7 +10,7 @@ import org.apache.spark.sql.execution.datasources.PartitionedFile
 
 object PdfPartitionedFileUtil {
 
-  def getHdfsPath(file: PartitionedFile) = {
+  def getHdfsPath(file: PartitionedFile):Path = {
     file.filePath.toPath
   }
 

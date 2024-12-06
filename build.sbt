@@ -37,7 +37,7 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.ScalaLibrary
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat
 
-val sparkVersion = scala.util.Properties.envOrElse("SPARK_VERSION", "3.4.1")
+val sparkVersion = scala.util.Properties.envOrElse("SPARK_VERSION", "3.5.0")
 
 val packageName  =
   sparkVersion match {
