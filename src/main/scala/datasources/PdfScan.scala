@@ -114,7 +114,7 @@ case class PdfScan(
         currentFiles += file
       }
       closePartition()
-      partitions
+      partitions.toSeq
     }
 
     getFilePartitions(sparkSession, splitFiles, maxSplitBytes)

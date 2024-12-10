@@ -23,7 +23,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
   override def beforeEach(): Unit = {
     spark = new sql.SparkSession.Builder()
       .config("spark.driver.memory", "8G")
-      .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+      //.config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .config("spark.sql.repl.eagerEval.enabled", "true")
       .appName(appName)
       .master(master)

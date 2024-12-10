@@ -3,7 +3,7 @@ import xerial.sbt.Sonatype.GitHubHosting
 
 ThisBuild / version := "0.1.11"
 
-ThisBuild / scalaVersion := "2.12.15"
+ThisBuild / scalaVersion := scala.util.Properties.envOrElse("SCALA_VERSION", "2.12.15") // "2.13.14"
 ThisBuild / organization := "com.stabrise"
 ThisBuild / organizationName := "StabRise"
 ThisBuild / organizationHomepage := Some(url("https://www.stabrise.com"))
@@ -37,12 +37,13 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.ScalaLibrary
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat
 
-val sparkVersion = scala.util.Properties.envOrElse("SPARK_VERSION", "3.5.0")
+val sparkVersion = scala.util.Properties.envOrElse("SPARK_VERSION", "3.5.3") // "4.0.0-preview2", "3.4.1", "3.3.2
 
 val packageName  =
   sparkVersion match {
     case sparkVersion if sparkVersion.startsWith("3.3") => "spark-pdf-spark33"
     case sparkVersion if sparkVersion.startsWith("3.4") => "spark-pdf-spark34"
+    case sparkVersion if sparkVersion.startsWith("4.0") => "spark-pdf-spark40"
     case _ =>  "spark-pdf-spark35"
   }
 
@@ -52,6 +53,14 @@ lazy val common = (project in file("common"))
     commonSettings
   )
   .disablePlugins(AssemblyPlugin)
+
+lazy val spark40 = (project in file("spark40"))
+  .settings(
+    name := "spark40",
+    commonSettings,
+  )
+  .disablePlugins(AssemblyPlugin)
+  .dependsOn(common)
 
 lazy val spark35 = (project in file("spark35"))
   .settings(
@@ -89,12 +98,14 @@ def aggregatedModules(): List[sbt.ProjectReference] =
   sparkVersion match {
     case sparkVersion if sparkVersion.startsWith("3.3") => List(common, spark33)
     case sparkVersion if sparkVersion.startsWith("3.4") => List(common, spark34)
+    case sparkVersion if sparkVersion.startsWith("4.0") => List(common, spark40)
     case _ =>  List(common, spark35)
   }
 def dependencyModules(): List[ClasspathDependency] =
   sparkVersion match {
     case sparkVersion if sparkVersion.startsWith("3.3") => List(spark33).map(ClasspathDependency(_, None))
     case sparkVersion if sparkVersion.startsWith("3.4") => List(spark34).map(ClasspathDependency(_, None))
+    case sparkVersion if sparkVersion.startsWith("4.0") => List(spark40).map(ClasspathDependency(_, None))
     case _ =>  List(spark35).map(ClasspathDependency(_, None))
   }
 
