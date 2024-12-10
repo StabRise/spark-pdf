@@ -92,8 +92,7 @@ class TesseractBytedeco(val lang: String="eng", config: String) {
   private class Iterator(iter: ResultIterator, level: Int) {
     iter.Begin()
     def toList: List[BoxWithMeta] = iter match {
-      case null => Nil
-      case _ =>
+      case iter:ResultIterator =>
         @annotation.tailrec
         def loop(rem: ResultIterator, acc: List[BoxWithMeta]): List[BoxWithMeta] =
           if (rem.Next(level))
@@ -101,6 +100,7 @@ class TesseractBytedeco(val lang: String="eng", config: String) {
           else
             acc.reverse
         loop(iter, List(getBox(iter, level)))
+      case _ => Nil
     }
   }
 }
