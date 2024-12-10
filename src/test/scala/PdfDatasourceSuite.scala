@@ -73,6 +73,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     val document = Document(data.head.getAs[Row](0))
     document.path should include(filePath)
     document.text should include("On October 21, 2024, tech giant OpenAl announced the release")
+    document.bBoxes.length shouldBe 185
     //pdfDF.select("document.*").show(2, truncate = true)
   }
 
@@ -88,6 +89,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
       .option("reader", reader)
       .option("ocrConfig", "psm=11")
       .load(pdfPath)
+      .cache()
     (filePath, fileName, pdfDF)
   }
 
