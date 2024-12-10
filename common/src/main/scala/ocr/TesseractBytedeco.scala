@@ -73,14 +73,14 @@ class TesseractBytedeco(val lang: String="eng", config: String) {
     iter.BoundingBox(level, x1, y1, x2, y2)
     val symbolPointer = iter.GetUTF8Text(level)
     val encoding = getDefaultStringEncoding
-    val symbol = if (symbolPointer != null) symbolPointer.getString(encoding) else null
+    val text = Option(symbolPointer).map(_.getString(encoding)).getOrElse("")
     val confidence = iter.Confidence(level)
     TessDeleteText(symbolPointer)
     val isStartWord = iter.IsAtBeginningOf(PIL.WORD)
     val isStartLine = iter.IsAtBeginningOf(PIL.TEXTLINE)
 
     BoxWithMeta(
-      text = symbol,
+      text = text,
       score = confidence,
       x = x1.get,
       y = y1.get,
