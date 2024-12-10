@@ -3,7 +3,7 @@ package datasources
 
 import com.stabrise.sparkpdf.DefaultOptions
 import com.stabrise.sparkpdf.ocr.TesseractBytedeco
-import com.stabrise.sparkpdf.schemas.Box
+import com.stabrise.sparkpdf.schemas.{Box, Document}
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.connector.read.PartitionReader
@@ -50,17 +50,10 @@ abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
       0)
 
     // Run OCR on the image
-    val ocrText = if (readDataSchema.fieldNames.contains("document")) {
-      tesseract.imageToText(image)
-    } else ""
-
-    val bBoxes = ArrayData.toArrayData(Array.empty[Box])
-    val documentRow = InternalRow(
-      UTF8String.fromString(filename),
-      UTF8String.fromString(ocrText),
-      UTF8String.fromString("common/src/main/scala/ocr"),
-      bBoxes,
-      UTF8String.fromString(""))
+    val ocrDocument = if (readDataSchema.fieldNames.contains("document")) {
+      tesseract.imageToDocument(image, PIL.WORD, 0, filename)
+    } else
+      Document(filename, "", "", Array[Box]())
 
     // Assemble final row
     InternalRow(
@@ -70,8 +63,7 @@ abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
       inputPartition.index,
       UTF8String.fromString(text),
       imageRow,
-      documentRow
+      ocrDocument.toInternalRow
     )
   }
-
 }
