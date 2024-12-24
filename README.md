@@ -41,7 +41,9 @@
 
 **Source Code**: [https://github.com/StabRise/spark-pdf](https://github.com/StabRise/spark-pdf)
 
-**Quick Start Jupyter Notebook**: [PdfDataSource.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSource.ipynb)
+**Quick Start Jupyter Notebook Spark 3.x.x**: [PdfDataSource.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSource.ipynb)
+
+**Quick Start Jupyter Notebook Spark 4.0.x**: [PdfDataSourceSpark4.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSourceSpark4.ipynb)
 
 ---
 
@@ -61,9 +63,11 @@ If you found useful this project, please give a star to the repository.
 
 ## Requirements
 
-- Java 8, 11
-- Apache Spark 3.3.2, 3.4.1, 3.5.0
+- Java 8, 11, 17
+- Apache Spark 3.3.2, 3.4.1, 3.5.0, 4.0.0
 - Ghostscript 9.50 or later (only for the GhostScript reader)
+
+Spark 4.0.0 is supported in the version `0.1.11` and later (need Java 17 and Scala 2.13).
 
 ## Installation
 
@@ -73,7 +77,7 @@ Binary package is available in the Maven Central Repository.
 - **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.11
 - **Spark 3.4.***: com.stabrise:spark-pdf-spark34_2.12:0.1.11
 - **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.11
-
+- **Spark 4.0.***: com.stabrise:spark-pdf-spark34_2.13:0.1.11
 
 ## Options for the data source:
 
