@@ -3,7 +3,7 @@ import xerial.sbt.Sonatype.GitHubHosting
 
 ThisBuild / version := "0.1.11"
 
-ThisBuild / scalaVersion := scala.util.Properties.envOrElse("SCALA_VERSION", "2.12.15") // "2.13.14"
+ThisBuild / scalaVersion := scala.util.Properties.envOrElse("SCALA_VERSION", "2.12.15") // "2.13.14", "2.12.15"
 ThisBuild / organization := "com.stabrise"
 ThisBuild / organizationName := "StabRise"
 ThisBuild / organizationHomepage := Some(url("https://www.stabrise.com"))
@@ -16,18 +16,18 @@ ThisBuild / scmInfo := Some(
   )
 )
 
-ThisBuild / sonatypeProjectHosting := Some(GitHubHosting("StabRise", "spark-pdf", "kolia1985@gmail.com"))
+ThisBuild / sonatypeProjectHosting := Some(GitHubHosting("StabRise", "spark-pdf", "mykola.melnyk.ml@gmail.com"))
 ThisBuild / versionScheme := Some("early-semver")
 ThisBuild / developers := List(
   Developer(
-    id    = "kolia1985",
+    id    = "mykolamelnykml",
     name  = "Mykola Melnyk",
-    email = "kolia1985@gmail.com",
+    email = "mykola.melnyk.ml@gmail.com",
     url   = url("https://stabrise.com")
   )
 )
 
-ThisBuild / description := "PDF Datasource for Apache Spark. Read PDF files to the DataFrame."
+ThisBuild / description := "PDF Datasource for Apache Spark. Read PDF files lazy to the DataFrame."
 ThisBuild / licenses := List("AGPL-V3" -> new URL("https://www.gnu.org/licenses/agpl-3.0.html"))
 ThisBuild / homepage := Some(url("https://stabrise.com/spark-pdf/"))
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
@@ -37,7 +37,8 @@ ThisBuild / publishTo := sonatypePublishToBundle.value
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.ScalaLibrary
 root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat
 
-val sparkVersion = scala.util.Properties.envOrElse("SPARK_VERSION", "3.5.3") // "4.0.0-preview2", "3.4.1", "3.3.2
+// "4.0.0-preview2", "3.5.3","3.4.1", "3.3.2
+val sparkVersion = scala.util.Properties.envOrElse("SPARK_VERSION", "3.5.3")
 
 val packageName  =
   sparkVersion match {
@@ -145,7 +146,8 @@ lazy val assemblySettings = Seq(
     case PathList(ps @ _*) if ps.filter(_.contains ( "macos")).nonEmpty => MergeStrategy.discard
     case PathList(ps @ _*) if ps.filter(_.contains ( "windows")).nonEmpty => MergeStrategy.discard
     case PathList(ps @ _*) if ps.filter(_.contains ( "ios")).nonEmpty => MergeStrategy.discard
-    case PathList(ps @ _*) if ps.filter(p => p.contains("linux-arm") || p.contains("arm64-v8a") || p.contains("armeabi") ).nonEmpty => MergeStrategy.discard
+    case PathList(ps @ _*) if ps.filter(p => p.contains("linux-arm") || p.contains("arm64-v8a") ||
+      p.contains("armeabi") ).nonEmpty => MergeStrategy.discard
     case PathList(ps @ _*) if ps.filter(_.contains("linux-ppc")).nonEmpty => MergeStrategy.discard
     case PathList(ps @ _*) if ps.filter(_.contentEquals("linux-x86")).nonEmpty => MergeStrategy.discard
     case PathList(ps @ _*) if ps.filter(_.contentEquals("windows-x86")).nonEmpty => MergeStrategy.discard
@@ -155,7 +157,9 @@ lazy val assemblySettings = Seq(
     case "StaticLoggerBinder" => MergeStrategy.discard
     case PathList("net", "imglib2", "util", "StopWatch.class") => MergeStrategy.first
     case PathList("META-INF", fileName)
-      if List("NOTICE", "MANIFEST.MF", "DEPENDENCIES", "INDEX.LIST").contains(fileName) || fileName.endsWith(".txt") || fileName.endsWith(".RSA") || fileName.endsWith(".DSA") || fileName.endsWith(".SF")
+      if List("NOTICE", "MANIFEST.MF", "DEPENDENCIES", "INDEX.LIST").contains(fileName) ||
+        fileName.endsWith(".txt") || fileName.endsWith(".RSA") ||
+        fileName.endsWith(".DSA") || fileName.endsWith(".SF")
     => MergeStrategy.discard
     case "META-INF/services/javax.imageio.spi.ImageReaderSpi" => MergeStrategy.concat
     case PathList("META-INF", "services", _@_*) => MergeStrategy.first
