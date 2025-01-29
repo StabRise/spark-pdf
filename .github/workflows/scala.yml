@@ -21,6 +21,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: 'sbt'
+    - uses: sbt/setup-sbt@v1
     - name: Install Ghostscript
       run: sudo apt-get install ghostscript -y
     - name: Run tests on Spark 3.3.2
@@ -46,6 +47,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'sbt'
+      - uses: sbt/setup-sbt@v1
       - name: Install Ghostscript
         run: sudo apt-get install ghostscript -y
       - name: Run tests on Spark 4.0.0
