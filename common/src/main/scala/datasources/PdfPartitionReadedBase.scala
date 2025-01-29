@@ -30,6 +30,7 @@ abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
 
   override def get(): InternalRow = {
     val resolution = options.getOrElse("resolution", DefaultOptions.RESOLUTION).toInt
+    val forceOCR = options.getOrElse("forceOCR", "false").toBoolean
 
     val text = if (readDataSchema.fieldNames.contains("text")) {
       getSearchableText
@@ -51,7 +52,11 @@ abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
 
     // Run OCR on the image
     val ocrDocument = if (readDataSchema.fieldNames.contains("document")) {
-      tesseract.imageToDocument(image, PIL.WORD, 0, filename)
+      if (forceOCR || text.isEmpty) {
+        tesseract.imageToDocument(image, PIL.WORD, 0, filename)
+      } else {
+        Document(filename, "", "", Array[Box]())
+      }
     } else
       Document(filename, "", "", Array[Box]())
 

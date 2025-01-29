@@ -60,6 +60,16 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     checkOcrResulst(filePath, fileName, pdfDF)
   }
 
+  test("PDFDataSource with PdfBox and forceOCR") {
+    val (filePath, fileName, pdfDF) = readPdf(PdfReader.PDF_BOX, forceOCR = true)
+    checkOcrResulst(filePath, fileName, pdfDF)
+  }
+
+  test("PDFDataSource with PdfBox and skip OCR if text layer is present") {
+    val (filePath, fileName, pdfDF) = readPdf(PdfReader.PDF_BOX, skipOCR = true)
+    checkImegeResult(pdfDF)
+  }
+
   private def checkOcrResulst(filePath: String, fileName: String, pdfDF: DataFrame): Unit = {
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
@@ -77,7 +87,7 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     //pdfDF.select("document.*").show(2, truncate = true)
   }
 
-  private def readPdf(reader: String, filePath: String = "pdfs/example_image_10_page.pdf") = {
+  private def readPdf(reader: String, filePath: String = "pdfs/example_image_10_page.pdf", forceOCR: Boolean = false, skipOCR: Boolean = false) = {
     val fileName = Paths.get(filePath).getFileName.toString
     val pdfPath = getClass.getClassLoader.getResource(filePath).getPath
 
@@ -88,6 +98,8 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
       .option("pagePerPartition", "2")
       .option("reader", reader)
       .option("ocrConfig", "psm=11")
+      .option("forceOCR", forceOCR.toString)
+      .option("skipOCR", skipOCR.toString)
       .load(pdfPath)
       .cache()
     (filePath, fileName, pdfDF)
@@ -97,4 +109,3 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     spark.stop()
   }
 }
-
