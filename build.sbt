@@ -1,7 +1,7 @@
 import xerial.sbt.Sonatype.sonatypeCentralHost
 import xerial.sbt.Sonatype.GitHubHosting
 
-ThisBuild / version := "0.1.11"
+ThisBuild / version := "0.1.14"
 
 ThisBuild / scalaVersion := scala.util.Properties.envOrElse("SCALA_VERSION", "2.12.15") // "2.13.14", "2.12.15"
 ThisBuild / organization := "com.stabrise"
@@ -27,7 +27,9 @@ ThisBuild / developers := List(
   )
 )
 
-ThisBuild / description := "PDF Datasource for Apache Spark. Read PDF files lazy to the DataFrame."
+ThisBuild / description := "Spark PDF a custom data source that enables efficient and scalable processing" +
+  " of PDF files within the Apache Spark. Included OCR compatable with ScaleDP." +
+  " Support for Apache Spark 3.3, 3.4, 3.5, 4.0."
 ThisBuild / licenses := List("AGPL-V3" -> new URL("https://www.gnu.org/licenses/agpl-3.0.html"))
 ThisBuild / homepage := Some(url("https://stabrise.com/spark-pdf/"))
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
@@ -51,7 +53,8 @@ val packageName  =
 lazy val common = (project in file("common"))
   .settings(
     name := "common",
-    commonSettings
+    commonSettings,
+    publish := { },
   )
   .disablePlugins(AssemblyPlugin)
 
@@ -67,6 +70,7 @@ lazy val spark35 = (project in file("spark35"))
   .settings(
     name := "spark35",
     commonSettings,
+    publish := { },
   )
   .disablePlugins(AssemblyPlugin)
   .dependsOn(common)
@@ -91,7 +95,9 @@ lazy val root = (project in file("."))
   .settings(
     name := packageName,
     commonSettings,
+    assemblySettings,
   )
+
   .dependsOn(dependencyModules():_*)
   .aggregate(aggregatedModules(): _*)
 
@@ -180,3 +186,12 @@ lazy val assemblySettings = Seq(
   assembly / assemblyJarName := s"spark-pdf-${version.value}.jar",
   assembly / test  := {}
 )
+
+
+artifact in (Compile, assembly) := {
+  val art = (artifact in (Compile, assembly)).value
+  //art.withClassifier(Some("assembly"))
+  art
+}
+
+addArtifact(artifact in (Compile, assembly), assembly)

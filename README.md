@@ -41,6 +41,8 @@
 
 **Source Code**: [https://github.com/StabRise/spark-pdf](https://github.com/StabRise/spark-pdf)
 
+**Quick Start Jupyter Notebook Spark 3.5.x on Databricks**: [PdfDataSourceSpark4.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSourceDatabricks.ipynb)
+
 **Quick Start Jupyter Notebook Spark 3.x.x**: [PdfDataSource.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSource.ipynb)
 
 **Quick Start Jupyter Notebook Spark 4.0.x**: [PdfDataSourceSpark4.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSourceSpark4.ipynb)
@@ -53,13 +55,17 @@ The project provides a custom data source for the [Apache Spark](https://spark.a
 
 If you found useful this project, please give a star to the repository.
 
+👉 Works on Databricks now. See the [Databricks example](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSourceDatabricks.ipynb).
+
 ## Key features:
 
 - Read PDF documents to the Spark DataFrame
-- Support read PDF files lazy per page
+- Support efficient read PDF files lazy per page
 - Support big files, up to 10k pages
-- Support scanned PDF files (call OCR)
+- Support scanned PDF files (call OCR for text recognition from the images)
 - No need to install Tesseract OCR, it's included in the package
+- 👉 Compatible with [ScaleDP](https://github.com/StabRise/ScaleDP), an Open-Source Library for Processing Documents using AI/ML in Apache Spark.
+
 
 ## Requirements
 
@@ -74,7 +80,7 @@ Spark 4.0.0 is supported in the version `0.1.11` and later (need Java 17 and Sca
 Binary package is available in the Maven Central Repository.
 
 
-- **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.11
+- **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.14
 - **Spark 3.4.***: com.stabrise:spark-pdf-spark34_2.12:0.1.11
 - **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.11
 - **Spark 4.0.***: com.stabrise:spark-pdf-spark34_2.13:0.1.11

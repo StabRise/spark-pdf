@@ -33,7 +33,9 @@ object PdfPartitionedFileUtil {
     (0L until page_num by maxSplitBytes).map { offset =>
       val remaining = page_num - offset
       val size = if (remaining > maxSplitBytes) maxSplitBytes else remaining
-      val hosts = PdfBasePartitionedFileUtil.getBlockHosts(getBlockLocations(file.fileStatus), offset, size)
+      //TODO: temporary changed for avoid the error on Databricks, need investigate more
+      //val hosts = PdfBasePartitionedFileUtil.getBlockHosts(getBlockLocations(file.fileStatus), offset, size)
+      val hosts = PdfBasePartitionedFileUtil.getBlockHosts(Array.empty[BlockLocation], offset, size)
       PartitionedFile(
         partitionValues=partitionValues,
         filePath=SparkPath.fromPath(file.getPath),
