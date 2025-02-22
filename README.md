@@ -83,7 +83,7 @@ Binary package is available in the Maven Central Repository.
 - **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.14
 - **Spark 3.4.***: com.stabrise:spark-pdf-spark34_2.12:0.1.11
 - **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.11
-- **Spark 4.0.***: com.stabrise:spark-pdf-spark34_2.13:0.1.11
+- **Spark 4.0.***: com.stabrise:spark-pdf-spark40_2.13:0.1.11
 
 ## Options for the data source:
 
