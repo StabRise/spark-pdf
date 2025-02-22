@@ -50,8 +50,12 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
   }
 
   test("PDFDataSource with PdfBox") {
-
     val (filePath, fileName, pdfDF) = readPdf(PdfReader.PDF_BOX)
+    checkImegeResult(pdfDF)
+  }
+
+  test("PDFDataSource with empty reader") {
+    val (filePath, fileName, pdfDF) = readPdf("")
     checkImegeResult(pdfDF)
   }
 

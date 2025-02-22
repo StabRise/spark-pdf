@@ -14,7 +14,7 @@ class PdfPartitionReaderFactory(readDataSchema: StructType,
     options.get("reader") match {
       case Some(PdfReader.PDF_BOX) => new PdfPartitionReaderPDFBox(partition.asInstanceOf[FilePartition], readDataSchema, options)
       case Some(PdfReader.GHOST_SCRIPT) => new PdfPartitionReaderGS(partition.asInstanceOf[FilePartition], readDataSchema, options)
-      case _ => throw new RuntimeException(s"Unsupported reader for type: ${options.get("reader")}")
+      case _ => new PdfPartitionReaderPDFBox(partition.asInstanceOf[FilePartition], readDataSchema, options)
     }
   }
 }

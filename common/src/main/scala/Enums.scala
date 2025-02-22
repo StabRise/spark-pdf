@@ -19,6 +19,7 @@ object DefaultOptions {
   val PAGE_PER_PARTITION = "5"
   val OUTPUT_IMAGE_TYPE = "jpeg"
   val OCR_CONFIG = "psm=3"
+  var READER = PdfReader.PDF_BOX
 }
 
 object PSM {
