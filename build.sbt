@@ -1,7 +1,7 @@
 import xerial.sbt.Sonatype.sonatypeCentralHost
 import xerial.sbt.Sonatype.GitHubHosting
 
-ThisBuild / version := "0.1.14"
+ThisBuild / version := "0.1.15"
 
 ThisBuild / scalaVersion := scala.util.Properties.envOrElse("SCALA_VERSION", "2.12.15") // "2.13.14", "2.12.15"
 ThisBuild / organization := "com.stabrise"
@@ -50,9 +50,17 @@ val packageName  =
     case _ =>  "spark-pdf-spark35"
   }
 
+val commonPackageName  =
+  sparkVersion match {
+    case sparkVersion if sparkVersion.startsWith("3.3") => "common-spark-pdf-spark33"
+    case sparkVersion if sparkVersion.startsWith("3.4") => "common-spark-pdf-spark34"
+    case sparkVersion if sparkVersion.startsWith("4.0") => "common-spark-pdf-spark40"
+    case _ =>  "common-spark-pdf-spark35"
+  }
+
 lazy val common = (project in file("common"))
   .settings(
-    name := "common",
+    name := commonPackageName,
     commonSettings,
     publish := { },
   )
@@ -62,6 +70,7 @@ lazy val spark40 = (project in file("spark40"))
   .settings(
     name := "spark40",
     commonSettings,
+    publish := { },
   )
   .disablePlugins(AssemblyPlugin)
   .dependsOn(common)
@@ -79,6 +88,7 @@ lazy val spark34 = (project in file("spark34"))
   .settings(
     name := "spark34",
     commonSettings,
+    publish := { },
   )
   .disablePlugins(AssemblyPlugin)
   .dependsOn(common)
@@ -87,6 +97,7 @@ lazy val spark33 = (project in file("spark33"))
   .settings(
     name := "spark33",
     commonSettings,
+    publish := { },
   )
   .disablePlugins(AssemblyPlugin)
   .dependsOn(common)

@@ -41,7 +41,7 @@
 
 **Source Code**: [https://github.com/StabRise/spark-pdf](https://github.com/StabRise/spark-pdf)
 
-**Quick Start Jupyter Notebook Spark 3.5.x on Databricks**: [PdfDataSourceSpark4.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSourceDatabricks.ipynb)
+**Quick Start Jupyter Notebook Spark 3.5.x on Databricks**: [PdfDataSourceDatabricks.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSourceDatabricks.ipynb)
 
 **Quick Start Jupyter Notebook Spark 3.x.x**: [PdfDataSource.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSource.ipynb)
 
@@ -65,6 +65,7 @@ If you found useful this project, please give a star to the repository.
 - Support scanned PDF files (call OCR for text recognition from the images)
 - No need to install Tesseract OCR, it's included in the package
 - 👉 Compatible with [ScaleDP](https://github.com/StabRise/ScaleDP), an Open-Source Library for Processing Documents using AI/ML in Apache Spark.
+- Works with Spark Connect
 
 
 ## Requirements
@@ -80,10 +81,10 @@ Spark 4.0.0 is supported in the version `0.1.11` and later (need Java 17 and Sca
 Binary package is available in the Maven Central Repository.
 
 
-- **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.14
-- **Spark 3.4.***: com.stabrise:spark-pdf-spark34_2.12:0.1.11
-- **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.11
-- **Spark 4.0.***: com.stabrise:spark-pdf-spark40_2.13:0.1.11
+- **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.15
+- **Spark 3.4.***: com.stabrise:spark-pdf-spark34_2.12:0.1.11 (issue with publishing fresh version)
+- **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.15
+- **Spark 4.0.***: com.stabrise:spark-pdf-spark40_2.13:0.1.15
 
 ## Options for the data source:
 
@@ -145,7 +146,7 @@ import org.apache.spark.sql.SparkSession
 val spark = SparkSession.builder()
   .appName("Spark PDF Example")
   .master("local[*]")
-  .config("spark.jars.packages", "com.stabrise:spark-pdf-spark35_2.12:0.1.11")
+  .config("spark.jars.packages", "com.stabrise:spark-pdf-spark35_2.12:0.1.15")
   .getOrCreate()
   
 val df = spark.read.format("pdf")
@@ -167,7 +168,7 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder \
     .master("local[*]") \
     .appName("SparkPdf") \
-    .config("spark.jars.packages", "com.stabrise:spark-pdf-spark35_2.12:0.1.11") \
+    .config("spark.jars.packages", "com.stabrise:spark-pdf-spark35_2.12:0.1.15") \
     .getOrCreate()
 
 df = spark.read.format("pdf") \
