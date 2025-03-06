@@ -47,6 +47,8 @@
 
 **Quick Start Jupyter Notebook Spark 4.0.x**: [PdfDataSourceSpark4.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSourceSpark4.ipynb)
 
+**With Spark Connect**: [PdfDataSourceSparkConnect.ipynb](https://github.com/StabRise/spark-pdf/blob/main/examples/PdfDataSourceSparkConnect.ipynb)
+
 ---
 
 ## Welcome to the Spark PDF
