@@ -1,6 +1,6 @@
 <p align="center">
   <br/>
-    <img alt="Spark Pdf" src="https://stabrise.com/media/filer_public_thumbnails/filer_public/16/d6/16d6a0d6-f162-42ad-a5a3-7dc20361ad24/sparkpdf.png__1000x300_subsampling-2.webp" width="450" style="max-width: 100%;">
+    <a hreh="https://stabrise.com/spark-pdf/"><img alt="Spark Pdf" src="https://stabrise.com/static/images/projects/sparkpdf.webp" width="450" style="max-width: 100%;"></a>
   <br/>
 </p>
 
