@@ -7,6 +7,8 @@ import org.apache.pdfbox.rendering.{PDFRenderer, ImageType => PDFBoxImageType}
 import org.apache.pdfbox.text.PDFTextStripper
 import org.apache.spark.sql.execution.datasources.FilePartition
 import org.apache.spark.sql.types.StructType
+import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.util.SerializableConfiguration
 
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
@@ -15,8 +17,9 @@ import javax.imageio.ImageIO
 // TODO: Need to refactor it for reduce to use state variables and make it more transparent
 class PdfPartitionReaderPDFBox(inputPartition: FilePartition,
                                readDataSchema: StructType,
+                               broadcastedConf: Broadcast[SerializableConfiguration],
                                options: Map[String,String])
-  extends PdfPartitionReadedBase(inputPartition, readDataSchema, options) {
+  extends PdfPartitionReadedBase(inputPartition, readDataSchema, broadcastedConf, options) {
 
   private var currenFile = 0
   private val outputImageType = options.getOrElse("outputImageType", DefaultOptions.OUTPUT_IMAGE_TYPE)
@@ -31,7 +34,7 @@ class PdfPartitionReaderPDFBox(inputPartition: FilePartition,
       if (pageNum == file.start.toInt) {
         filename = file.filePath.toString()
         val hdfsPath = PdfPartitionedFileUtil.getHdfsPath(file)
-        val fs = hdfsPath.getFileSystem(new Configuration())
+        val fs = hdfsPath.getFileSystem(broadcastedConf.value.value)
         val status = fs.getFileStatus(hdfsPath)
         document = PDDocument.load(fs.open(status.getPath))
         stripper = new PDFTextStripper()

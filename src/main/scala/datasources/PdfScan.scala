@@ -8,6 +8,7 @@ import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionRead
 import org.apache.spark.sql.execution.datasources.{FilePartition, PartitionedFile, PartitioningAwareFileIndex}
 import org.apache.spark.sql.types.{StructField, StructType}
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
+import org.apache.spark.util.SerializableConfiguration
 
 import java.util.Locale
 import scala.collection.mutable.ArrayBuffer
@@ -120,8 +121,13 @@ case class PdfScan(
     getFilePartitions(sparkSession, splitFiles, maxSplitBytes)
   }
 
-  override def createReaderFactory(): PartitionReaderFactory = new PdfPartitionReaderFactory(readDataSchema,
+  override def createReaderFactory(): PartitionReaderFactory = {
+    // Hadoop Configurations are case sensitive.
+    val hadoopConf = sparkSession.sessionState.newHadoopConf()
+    val broadcastedConf = sparkSession.sparkContext.broadcast(
+      new SerializableConfiguration(hadoopConf))
+    new PdfPartitionReaderFactory(readDataSchema,
     options.asScala.toMap,
-    sparkSession)
+      broadcastedConf)}
 }
 
