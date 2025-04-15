@@ -1,7 +1,7 @@
 import xerial.sbt.Sonatype.sonatypeCentralHost
 import xerial.sbt.Sonatype.GitHubHosting
 
-ThisBuild / version := "0.1.15"
+ThisBuild / version := "0.1.16"
 
 ThisBuild / scalaVersion := scala.util.Properties.envOrElse("SCALA_VERSION", "2.12.15") // "2.13.14", "2.12.15"
 ThisBuild / organization := "com.stabrise"

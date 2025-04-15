@@ -2,8 +2,10 @@ package com.stabrise.sparkpdf
 package datasources
 
 import org.apache.hadoop.fs.Path
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.execution.datasources.{FilePartition, PartitionedFile}
 import org.apache.spark.sql.types.StructType
+import org.apache.spark.util.SerializableConfiguration
 
 import java.io.{ByteArrayOutputStream, InputStream}
 import java.net.URI
@@ -11,8 +13,11 @@ import scala.annotation.tailrec
 import scala.sys.process.{Process, ProcessLogger}
 
 // TODO: Need to refactor it for reduce to use state variables and make it more transparent
-class PdfPartitionReaderGS(inputPartition: FilePartition, readDataSchema: StructType, options: Map[String,String])
-  extends PdfPartitionReadedBase(inputPartition, readDataSchema, options) {
+class PdfPartitionReaderGS(inputPartition: FilePartition,
+                           readDataSchema: StructType,
+                           broadcastedConf: Broadcast[SerializableConfiguration],
+                           options: Map[String,String])
+  extends PdfPartitionReadedBase(inputPartition, readDataSchema, broadcastedConf, options) {
   private var currentFileIndex = 0
   private var currentFile: PartitionedFile = _
   var document: InputStream = _

@@ -10,12 +10,15 @@ import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.execution.datasources.FilePartition
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.unsafe.types.UTF8String
+import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.util.SerializableConfiguration
 
 import java.nio.file.Paths
 
 
 abstract class PdfPartitionReadedBase(inputPartition: FilePartition,
                                       readDataSchema: StructType,
+                                      broadcastedConf: Broadcast[SerializableConfiguration],
                                       options: Map[String,String])
   extends PartitionReader[InternalRow] {
 
