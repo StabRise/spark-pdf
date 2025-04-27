@@ -36,7 +36,7 @@ class PdfPartitionReaderPDFBox(inputPartition: FilePartition,
         val hdfsPath = PdfPartitionedFileUtil.getHdfsPath(file)
         val fs = hdfsPath.getFileSystem(broadcastedConf.value.value)
         val status = fs.getFileStatus(hdfsPath)
-        document = PDDocument.load(fs.open(status.getPath))
+        document = PDDocument.load(fs.open(status.getPath), options.getOrElse("password", ""))
         stripper = new PDFTextStripper()
         pdfRenderer = new PDFRenderer(document)
       }

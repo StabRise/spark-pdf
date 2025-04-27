@@ -21,12 +21,14 @@ object PdfPartitionedFileUtil {
                   filePath: Path,
                   isSplitable: Boolean,
                   maxSplitBytes: Long,
-                  partitionValues: InternalRow): Seq[PartitionedFile] = {
+                  partitionValues: InternalRow,
+                  options: Map[String,String]
+                ): Seq[PartitionedFile] = {
     val path = filePath
     val fs = path.getFileSystem(sparkSession.sessionState.newHadoopConf())
 
     // Load the PDF document
-    val document = PDDocument.load(fs.open(file.getPath))
+    val document = PDDocument.load(fs.open(file.getPath), options.getOrElse("password", ""))
     val page_num = document.getNumberOfPages
     document.close()
 

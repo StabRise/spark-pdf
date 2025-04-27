@@ -64,6 +64,26 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     checkOcrResulst(filePath, fileName, pdfDF)
   }
 
+  test("PDFDataSource with PdfBox and protected PDF") {
+
+    val (filePath, fileName, pdfDF) = readPdf(
+      PdfReader.PDF_BOX,
+      "pdfs/test_encrypted.pdf",
+      extraOptions = Map("password" -> "tzXT4swEx8YFJH")
+    )
+    pdfDF.count() shouldBe 1
+    pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
+    pdfDF.rdd.partitions.length shouldBe 1
+    val data = pdfDF.select("document", "filename", "path").collect()
+
+    data.head.getString(1) shouldBe fileName
+    data.head.getString(2) should include(filePath)
+
+    val document = Document(data.head.getAs[Row](0))
+    document.path should include(filePath)
+    document.text should include("Test PDF file with password")
+  }
+
   private def checkOcrResulst(filePath: String, fileName: String, pdfDF: DataFrame): Unit = {
     pdfDF.count() shouldBe 10
     pdfDF.columns should contain allOf("path", "page_number", "text", "image", "partition_number")
@@ -81,19 +101,28 @@ class PdfDatasourceSuite extends AnyFunSuite with BeforeAndAfterEach {
     //pdfDF.select("document.*").show(2, truncate = true)
   }
 
-  private def readPdf(reader: String, filePath: String = "pdfs/example_image_10_page.pdf") = {
+  private def readPdf(
+                       reader: String,
+                       filePath: String = "pdfs/example_image_10_page.pdf",
+                       extraOptions: Map[String, String] = Map.empty
+                     ) = {
     val fileName = Paths.get(filePath).getFileName.toString
     val pdfPath = getClass.getClassLoader.getResource(filePath).getPath
 
-    // Read data using PDF data source
-    val pdfDF = spark.read.format("pdf")
+    // Build the reader with default and extra options
+    var readerBuilder = spark.read.format("pdf")
       .option("imageType", ImageType.BINARY)
       .option("resolution", "200")
       .option("pagePerPartition", "2")
       .option("reader", reader)
       .option("ocrConfig", "psm=11")
-      .load(pdfPath)
-      .cache()
+
+    // Apply extra options
+    extraOptions.foreach { case (key, value) =>
+      readerBuilder = readerBuilder.option(key, value)
+    }
+
+    val pdfDF = readerBuilder.load(pdfPath).cache()
     (filePath, fileName, pdfDF)
   }
 
