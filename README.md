@@ -84,7 +84,7 @@ Spark 4.0.0 is supported in the version `0.1.11` and later (need Java 17 and Sca
 Binary package is available in the Maven Central Repository.
 
 
-- **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.16
+- **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.17
 - **Spark 3.4.***: com.stabrise:spark-pdf-spark34_2.12:0.1.11 (issue with publishing fresh version)
 - **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.16
 - **Spark 4.0.***: com.stabrise:spark-pdf-spark40_2.13:0.1.16
@@ -96,6 +96,7 @@ Binary package is available in the Maven Central Repository.
 - `pagePerPartition`: Number pages per partition in Spark DataFrame. Default: "5".
 - `reader`: Supports: `pdfBox` - based on PdfBox java lib, `gs` - based on GhostScript (need installation GhostScipt to the system)
 - `ocrConfig`: Tesseract OCR configuration. Default: "psm=3". For more information see [Tesseract OCR Params](TesseractParams.md)
+- `password`: Password for protected PDF files
 
 ## Output Columns in the DataFrame:
 

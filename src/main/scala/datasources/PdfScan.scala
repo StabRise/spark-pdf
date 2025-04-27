@@ -80,7 +80,8 @@ case class PdfScan(
           filePath = filePath,
           isSplitable = true,
           maxSplitBytes = maxSplitBytes,
-          partitionValues = partitionValues
+          partitionValues = partitionValues,
+          options = options.asScala.toMap,
         )
       }.toArray.sortBy(_.length)(implicitly[Ordering[Long]].reverse)
     }
