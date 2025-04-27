@@ -86,8 +86,8 @@ Binary package is available in the Maven Central Repository.
 
 - **Spark 3.5.***: com.stabrise:spark-pdf-spark35_2.12:0.1.17
 - **Spark 3.4.***: com.stabrise:spark-pdf-spark34_2.12:0.1.11 (issue with publishing fresh version)
-- **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.16
-- **Spark 4.0.***: com.stabrise:spark-pdf-spark40_2.13:0.1.16
+- **Spark 3.3.***: com.stabrise:spark-pdf-spark33_2.12:0.1.17
+- **Spark 4.0.***: com.stabrise:spark-pdf-spark40_2.13:0.1.17
 
 ## Options for the data source:
 
@@ -159,6 +159,7 @@ val df = spark.read.format("pdf")
   .option("pagePerPartition", "2")
   .option("reader", "pdfBox")
   .option("ocrConfig", "psm=11")
+  .option("password", "pdf_password")
   .load("path to the pdf file(s)")
 
 df.select("path", "document").show()
@@ -181,6 +182,7 @@ df = spark.read.format("pdf") \
     .option("pagePerPartition", "2") \
     .option("reader", "pdfBox") \
     .option("ocrConfig", "psm=11") \
+    .option("password", "pdf_password") \
     .load("path to the pdf file(s)")
 
 df.select("path", "document").show()
